@@ -3,6 +3,7 @@
 
 #include "Sprite.h"
 #include <SDL2/SDL.h>
+#include <string> // Lägg till string
 
 class Player : public Sprite {
 private:
@@ -10,9 +11,11 @@ private:
     int width, height;
     int speed;
     SDL_Texture* texture;
+    std::string enemyTexPath; // Spara sökvägen till fiendens textur så vi kan spawna nya
 
 public:
-    Player(int startX, int startY, GameEngine* engine);
+    // Konstruktorn tar nu emot parametrar
+    Player(int startX, int startY, int w, int h, int spd, const std::string& texturePath, const std::string& enemyTex, GameEngine* engine);
     virtual ~Player();
 
     void update(float deltaTime, GameEngine* engine) override;

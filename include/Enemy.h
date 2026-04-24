@@ -3,6 +3,7 @@
 
 #include "Sprite.h"
 #include <SDL2/SDL.h>
+#include <string> // Lägg till string
 
 class Enemy : public Sprite {
 private:
@@ -12,7 +13,8 @@ private:
     SDL_Texture* texture;
 
 public:
-    Enemy(int startX, GameEngine* engine);
+    // Konstruktorn tar nu emot storlek, hastighet och textur
+    Enemy(int startX, int startY, int w, int h, int spdY, const std::string& texturePath, GameEngine* engine);
     virtual ~Enemy();
 
     void update(float deltaTime, GameEngine* engine) override;

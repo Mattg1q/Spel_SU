@@ -1,12 +1,12 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "GameEngine.h"
-#include "Constants.h"
 #include <cstdlib>
 
-Player::Player(int startX, int startY, GameEngine* engine) 
-    : x(startX), y(startY), width(50), height(50), speed(5) {
-    texture = engine->loadTexture(gPlayerPng);
+// Sätt in de medskickade parametrarna
+Player::Player(int startX, int startY, int w, int h, int spd, const std::string& texturePath, const std::string& enemyTex, GameEngine* engine) 
+    : x(startX), y(startY), width(w), height(h), speed(spd), enemyTexPath(enemyTex) {
+    texture = engine->loadTexture(texturePath);
 }
 
 Player::~Player() {
@@ -32,7 +32,11 @@ void Player::update(float deltaTime, GameEngine* engine) {
         
         if (enemy && enemy->isAlive() && engine->checkCollision(getRect(), enemy->getRect())) {
             enemy->setAlive(false);
-            engine->addSprite(new Enemy(rand() % 760, engine)); 
+            
+            // Slumpa en hastighet för nästa fiende (ex. mellan 1 och 4)
+            int randomSpeed = 1 + (rand() % 4); 
+            // Skapa fienden med korrekta värden hämtade ur variablerna
+            engine->addSprite(new Enemy(rand() % 760, -50, 40, 40, randomSpeed, enemyTexPath, engine)); 
         }
     }
 }

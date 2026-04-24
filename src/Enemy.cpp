@@ -1,11 +1,11 @@
 #include "Enemy.h"
 #include "GameEngine.h"
-#include "Constants.h"
 #include <cstdlib>
 
-Enemy::Enemy(int startX, GameEngine* engine)
-    : x(startX), y(0), width(40), height(40), speedY(2) {
-    texture = engine->loadTexture(gEnemyPng);
+// Initiera med värden från spelet (main)
+Enemy::Enemy(int startX, int startY, int w, int h, int spdY, const std::string& texturePath, GameEngine* engine)
+    : x(startX), y(startY), width(w), height(h), speedY(spdY) {
+    texture = engine->loadTexture(texturePath);
 }
 
 Enemy::~Enemy() {
@@ -18,8 +18,8 @@ void Enemy::update(float deltaTime, GameEngine* engine) {
     y += speedY;
 
     if (y > 600) {
-        setAlive(false);
-        engine->addSprite(new Enemy(rand() % 760, engine));
+        // Lärarens feedback punkt 2: Spelet skall avslutas när en fiende når botten
+        engine->quit();
     }
 }
 

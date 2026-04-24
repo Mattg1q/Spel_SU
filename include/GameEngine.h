@@ -20,6 +20,9 @@ public:
     GameEngine();
     ~GameEngine();
 
+    // Lägg till denna funktion:
+    void quit() { running = false; }
+    
     bool init();
     void addSprite(Sprite* sprite);
     void run();
