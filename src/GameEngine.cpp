@@ -113,6 +113,12 @@ bool GameEngine::checkCollision(const SDL_Rect& a, const SDL_Rect& b) {
     return SDL_HasIntersection(&a, &b);
 }
 
+bool GameEngine::checkCollision(Sprite* a, Sprite* b) {
+    SDL_Rect rectA = a->getRect();
+    SDL_Rect rectB = b->getRect();
+    return checkCollision(rectA, rectB);
+}
+
 SDL_Renderer* GameEngine::getRenderer() const {
     return renderer;
 }
@@ -120,6 +126,25 @@ SDL_Renderer* GameEngine::getRenderer() const {
 bool GameEngine::isKeyDown(SDL_Scancode key) const {
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
     return keystate[key];
+}
+
+bool GameEngine::isMouseButtonDown(int button) const {
+    Uint32 mouseState = SDL_GetMouseState(NULL, NULL);
+    if (button == 1) return (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
+    if (button == 3) return (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
+    return false;
+}
+
+int GameEngine::getMouseX() const {
+    int x;
+    SDL_GetMouseState(&x, NULL);
+    return x;
+}
+
+int GameEngine::getMouseY() const {
+    int y;
+    SDL_GetMouseState(NULL, &y);
+    return y;
 }
 
 SDL_Texture* GameEngine::loadTexture(const std::string& path) {

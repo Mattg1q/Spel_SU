@@ -1,3 +1,7 @@
+// ==========================================
+// SPELMOTORKLASS (GENERISK DEL)
+// Hanterar SDL och rendering bakom kulisserna
+// ==========================================
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
 
@@ -29,10 +33,17 @@ public:
     void cleanup();
 
     bool checkCollision(const SDL_Rect& a, const SDL_Rect& b);
+    bool checkCollision(Sprite* a, Sprite* b); // Ny intern kollision
     SDL_Renderer* getRenderer() const;
     const std::vector<Sprite*>& getSprites() const;
     
     bool isKeyDown(SDL_Scancode key) const; 
+    
+    // Nya publika funktioner i GameEngine
+    bool isMouseButtonDown(int button) const;
+    int getMouseX() const;
+    int getMouseY() const;
+
     SDL_Texture* loadTexture(const std::string& path);
 };
 
