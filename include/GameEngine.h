@@ -50,7 +50,12 @@ public:
 
     SDL_Texture* loadTexture(const std::string& path);
     SDL_Renderer* getRenderer() const { return renderer; }
-    const std::vector<Sprite*>& getSprites() const { return sprites; }
+    
+    // Endast deklaration här för att undvika redefinition error!
+    const std::vector<Sprite*>& getSprites() const; 
+
+    int getWindowWidth() const { return 800; }
+    int getWindowHeight() const { return 600; }
 };
 
 #endif

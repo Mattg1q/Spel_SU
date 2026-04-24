@@ -9,7 +9,8 @@ Enemy::Enemy(int startX, int startY, int w, int h, int spdY, const std::string& 
 void Enemy::update(float deltaTime, GameEngine* engine) {
     moveBy(0, speedY); // Inkapslad metod för rörelse
 
-    if (getY() > 600) { // Inkapslad metod för position
+    // ÄNDRAT: Frågar motorn var botten är istället för hårdkodade 600
+    if (getY() > engine->getWindowHeight()) { 
         engine->quit();
     }
 }

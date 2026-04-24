@@ -17,7 +17,11 @@ void Player::update(float deltaTime, GameEngine* engine) {
     }
 
     if (getX() < 0) setPosition(0, getY());
-    if (getX() > 750) setPosition(750, getY());
+    
+    // ÄNDRAT: Använder motorns dimensioner istället för hårdkodade 750
+    if (getX() > engine->getWindowWidth() - getRect().w) {
+        setPosition(engine->getWindowWidth() - getRect().w, getY());
+    }
 
     const std::vector<Sprite*>& allSprites = engine->getSprites();
     for (Sprite* s : allSprites) {
