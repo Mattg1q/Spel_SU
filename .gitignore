@@ -1,0 +1,16 @@
+# Build files
+build/
+bin/
+obj/
+*.o
+*.obj
+*.exe
+*.pdb
+*.ilk
+
+# VS Code
+.vscode/
+
+# Makefile artifacts
+*.o
+game
