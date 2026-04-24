@@ -1,16 +1,23 @@
 // ==========================================
 // SPELMOTORKLASS (GENERISK DEL)
-// Hanterar SDL och rendering bakom kulisserna
 // ==========================================
 #ifndef GAMEENGINE_H
 #define GAMEENGINE_H
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include <vector>
 #include <string>
 
+// Forward declarations för att dölja SDL från spelklasserna
+struct SDL_Window;
+struct SDL_Renderer;
+struct SDL_Texture;
+
 class Sprite;
+
+// Vår egen Key-enum för att helt dölja SDL_Scancode
+enum class Key {
+    Left, Right, Up, Down, A, D, W, S, Space
+};
 
 class GameEngine {
 private:
@@ -24,27 +31,21 @@ public:
     GameEngine();
     ~GameEngine();
 
-    // Lägg till denna funktion:
     void quit() { running = false; }
-    
     bool init();
     void addSprite(Sprite* sprite);
     void run();
     void cleanup();
 
-    bool checkCollision(const SDL_Rect& a, const SDL_Rect& b);
-    bool checkCollision(Sprite* a, Sprite* b); // Ny intern kollision
-    SDL_Renderer* getRenderer() const;
-    const std::vector<Sprite*>& getSprites() const;
+    // Endast det säkra API:et exponeras
+    bool checkCollision(Sprite* a, Sprite* b); 
     
-    bool isKeyDown(SDL_Scancode key) const; 
+    // Använder vår egen Key istället för SDL_Scancode
+    bool isKeyDown(Key key) const; 
     
-    // Nya publika funktioner i GameEngine
-    bool isMouseButtonDown(int button) const;
-    int getMouseX() const;
-    int getMouseY() const;
-
     SDL_Texture* loadTexture(const std::string& path);
+    SDL_Renderer* getRenderer() const { return renderer; }
+    const std::vector<Sprite*>& getSprites() const { return sprites; }
 };
 
 #endif

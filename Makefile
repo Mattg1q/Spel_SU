@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -Iinclude -std=c++11 -Wall
 # Standardlänkning som fungerar på Linux/Mac/Windows (om miljön är rätt uppsatt)
-LDFLAGS = -lSDL2main -lSDL2 -lSDL2_image
+LDFLAGS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
 SRC = $(wildcard src/*.cpp)
 OBJ = $(SRC:.cpp=.o)

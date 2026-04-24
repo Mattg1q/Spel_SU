@@ -8,9 +8,9 @@ Enemy::Enemy(int startX, int startY, int w, int h, int spdY, const std::string& 
 }
 
 void Enemy::update(float deltaTime, GameEngine* engine) {
-    y += speedY;
+    moveBy(0, speedY); // Inkapslad metod för rörelse
 
-    if (y > 600) {
+    if (getY() > 600) { // Inkapslad metod för position
         // Lärarens feedback punkt 2: Spelet skall avslutas när en fiende når botten
         engine->quit();
     }

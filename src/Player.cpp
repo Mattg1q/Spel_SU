@@ -8,15 +8,16 @@ Player::Player(int startX, int startY, int w, int h, int spd, const std::string&
 }
 
 void Player::update(float deltaTime, GameEngine* engine) {
-    if (engine->isKeyDown(SDL_SCANCODE_LEFT) || engine->isKeyDown(SDL_SCANCODE_A)) {
-        x -= speed;
+    // Använder motor-Abstraktion (Key::Left)
+    if (engine->isKeyDown(Key::Left) || engine->isKeyDown(Key::A)) {
+        moveBy(-speed, 0); // Använder inkapslad funktion istället för x -= speed
     }
-    if (engine->isKeyDown(SDL_SCANCODE_RIGHT) || engine->isKeyDown(SDL_SCANCODE_D)) {
-        x += speed;
+    if (engine->isKeyDown(Key::Right) || engine->isKeyDown(Key::D)) {
+        moveBy(speed, 0);
     }
 
-    if (x < 0) x = 0;
-    if (x > 750) x = 750;
+    if (getX() < 0) setPosition(0, getY());
+    if (getX() > 750) setPosition(750, getY());
 
     const std::vector<Sprite*>& allSprites = engine->getSprites();
     for (Sprite* s : allSprites) {

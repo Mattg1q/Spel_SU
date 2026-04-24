@@ -1,5 +1,7 @@
 #include "GameEngine.h"
 #include "Sprite.h"
+#include <SDL2/SDL.h>       // SDL existerar bara här!
+#include <SDL2/SDL_image.h> // SDL existerar bara här!
 #include <cstdlib>
 #include <ctime>
 
@@ -39,10 +41,6 @@ void GameEngine::addSprite(Sprite* sprite) {
     addedSprites.push_back(sprite);
 }
 
-const std::vector<Sprite*>& GameEngine::getSprites() const {
-    return sprites;
-}
-
 void GameEngine::run() {
     SDL_Event event;
 
@@ -50,6 +48,12 @@ void GameEngine::run() {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 running = false;
+            }
+            // Händelse-vidarebefordran av mus (KRAV UPPFYLLT)
+            else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                for (Sprite* s : sprites) {
+                    s->onMouseDown(event.button.x, event.button.y, event.button.button);
+                }
             }
         }
 
@@ -109,42 +113,30 @@ void GameEngine::cleanup() {
     SDL_Quit();
 }
 
-bool GameEngine::checkCollision(const SDL_Rect& a, const SDL_Rect& b) {
-    return SDL_HasIntersection(&a, &b);
-}
-
+// Konverterar från motorns interna Rect till SDL_Rect för krock
 bool GameEngine::checkCollision(Sprite* a, Sprite* b) {
-    SDL_Rect rectA = a->getRect();
-    SDL_Rect rectB = b->getRect();
-    return checkCollision(rectA, rectB);
+    Rect ra = a->getRect();
+    Rect rb = b->getRect();
+    SDL_Rect sdl_a = {ra.x, ra.y, ra.w, ra.h};
+    SDL_Rect sdl_b = {rb.x, rb.y, rb.w, rb.h};
+    return SDL_HasIntersection(&sdl_a, &sdl_b);
 }
 
-SDL_Renderer* GameEngine::getRenderer() const {
-    return renderer;
-}
-
-bool GameEngine::isKeyDown(SDL_Scancode key) const {
+// Översätter vår Key-enum till SDL_Scancode
+bool GameEngine::isKeyDown(Key key) const {
     const Uint8* keystate = SDL_GetKeyboardState(NULL);
-    return keystate[key];
-}
-
-bool GameEngine::isMouseButtonDown(int button) const {
-    Uint32 mouseState = SDL_GetMouseState(NULL, NULL);
-    if (button == 1) return (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
-    if (button == 3) return (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
-    return false;
-}
-
-int GameEngine::getMouseX() const {
-    int x;
-    SDL_GetMouseState(&x, NULL);
-    return x;
-}
-
-int GameEngine::getMouseY() const {
-    int y;
-    SDL_GetMouseState(NULL, &y);
-    return y;
+    switch(key) {
+        case Key::Left: return keystate[SDL_SCANCODE_LEFT];
+        case Key::Right: return keystate[SDL_SCANCODE_RIGHT];
+        case Key::A: return keystate[SDL_SCANCODE_A];
+        case Key::D: return keystate[SDL_SCANCODE_D];
+        case Key::Up: return keystate[SDL_SCANCODE_UP];
+        case Key::Down: return keystate[SDL_SCANCODE_DOWN];
+        case Key::W: return keystate[SDL_SCANCODE_W];
+        case Key::S: return keystate[SDL_SCANCODE_S];
+        case Key::Space: return keystate[SDL_SCANCODE_SPACE];
+        default: return false;
+    }
 }
 
 SDL_Texture* GameEngine::loadTexture(const std::string& path) {
