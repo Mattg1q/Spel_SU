@@ -41,6 +41,10 @@ void GameEngine::addSprite(Sprite* sprite) {
     addedSprites.push_back(sprite);
 }
 
+const std::vector<Sprite*>& GameEngine::getSprites() const {
+    return sprites;
+}
+
 void GameEngine::run() {
     SDL_Event event;
 
@@ -130,13 +134,27 @@ bool GameEngine::isKeyDown(Key key) const {
         case Key::Right: return keystate[SDL_SCANCODE_RIGHT];
         case Key::A: return keystate[SDL_SCANCODE_A];
         case Key::D: return keystate[SDL_SCANCODE_D];
-        case Key::Up: return keystate[SDL_SCANCODE_UP];
-        case Key::Down: return keystate[SDL_SCANCODE_DOWN];
-        case Key::W: return keystate[SDL_SCANCODE_W];
-        case Key::S: return keystate[SDL_SCANCODE_S];
-        case Key::Space: return keystate[SDL_SCANCODE_SPACE];
         default: return false;
     }
+}
+
+bool GameEngine::isMouseButtonDown(int button) const {
+    Uint32 mouseState = SDL_GetMouseState(NULL, NULL);
+    if (button == 1) return (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) != 0;
+    if (button == 3) return (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT)) != 0;
+    return false;
+}
+
+int GameEngine::getMouseX() const {
+    int x;
+    SDL_GetMouseState(&x, NULL);
+    return x;
+}
+
+int GameEngine::getMouseY() const {
+    int y;
+    SDL_GetMouseState(NULL, &y);
+    return y;
 }
 
 SDL_Texture* GameEngine::loadTexture(const std::string& path) {

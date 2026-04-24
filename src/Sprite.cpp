@@ -11,7 +11,6 @@ Sprite::~Sprite() {
     }
 }
 
-
 void Sprite::render(SDL_Renderer* renderer) {
     Rect r = getRect();
     SDL_Rect sdl_rect = {r.x, r.y, r.w, r.h}; // Konvertera egen Rect till SDL_Rect

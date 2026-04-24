@@ -43,6 +43,11 @@ public:
     // Använder vår egen Key istället för SDL_Scancode
     bool isKeyDown(Key key) const; 
     
+    // Nya publika funktioner i GameEngine
+    bool isMouseButtonDown(int button) const;
+    int getMouseX() const;
+    int getMouseY() const;
+
     SDL_Texture* loadTexture(const std::string& path);
     SDL_Renderer* getRenderer() const { return renderer; }
     const std::vector<Sprite*>& getSprites() const { return sprites; }
